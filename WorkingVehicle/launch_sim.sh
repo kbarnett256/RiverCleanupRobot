@@ -1,4 +1,4 @@
-#!/bin/bash 
+#!/bin/bash
 
 WARP=1
 HELP="no"
@@ -20,7 +20,7 @@ for ARGI; do
         let "COUNT=$COUNT+1"
         UNDEFINED_ARG=""
     fi
-    # Handle Warp shortcut                                                      
+    # Handle Warp shortcut
     if [ "${ARGI//[^0-9]/}" = "$ARGI" -a "$COUNT" = 0 ]; then
         WARP=$ARGI
         let "COUNT=$COUNT+1"
@@ -47,19 +47,19 @@ fi
 if [ "${HELP}" = "yes" ]; then
     printf "%s [SWITCHES]            \n" $0
     printf "Switches:                \n"
-    printf "  --just_build, -j       \n" 
-    printf "  --help, -h             \n" 
+    printf "  --just_build, -j       \n"
+    printf "  --help, -h             \n"
     exit 0;
 fi
 
 #-------------------------------------------------------
-#  Part 2: Create the .moos and .bhv files. 
+#  Part 2: Create the .moos and .bhv files.
 #-------------------------------------------------------
 
 VNAME1="archie"  # The archie vehicle Community
-VPORT1="9100"
-LPORT1="9101"
-START_POS1="0,-20"      
+VPORT="9100" # This is the port archie runs on
+VOPORT="9101" # This port is mapped so archie can talk to shoreside
+START_POS1="0,-20"
 LOITER_PT1="x=-10,y=-60"
 RETURN_PT1="0,-20"
 
@@ -67,19 +67,21 @@ RETURN_PT1="0,-20"
 #VNAME2="betty"  # The betty vehicle Community
 #VPORT2="9200"
 #LPORT2="9201"
-#START_POS2="50,0"       
+#START_POS2="50,0"
 #LOITER_PT2="x=50,y=-40"
 #RETURN_PT2="30,-10"
 
 SNAME="shoreside"  # Shoreside Community
-SPORT="9300"
-SLPORT="9301"
-
+SPORT="9300" # This is the port shoreside runs on
+SOPORT="9301" # This port is mapped so shoreside can talk to archie
 
 # Prepare Archie files
+# Archies OPORT variable should = Archies VOPORT
+# Archies LISTEN variable should = shoresides OPORT
 nsplug meta_vehicle_sim.moos targ_archie.moos -f        \
-    VNAME=$VNAME1 VPORT=$VPORT1 LPORT=$LPORT1           \
-    START_POS=$START_POS1 WARP=$WARP                    \                 
+    VNAME=$VNAME1 VPORT=$VPORT OPORT=$VOPORT            \
+    LISTEN=$SOPORT                                      \
+    START_POS=$START_POS1 WARP=$WARP                    \
 
 nsplug meta_vehicle.bhv targ_archie.bhv -f              \
     VNAME=$VNAME1                                       \
@@ -87,21 +89,10 @@ nsplug meta_vehicle.bhv targ_archie.bhv -f              \
     LOITER_PT=$LOITER_PT1                               \
     RETURN_PT=$RETURN_PT1
 
-#Getting rid of betty
-# Prepare Betty files
-#nsplug meta_vehicle_sim.moos targ_betty.moos -f         \
-#    VNAME=$VNAME2 VPORT=$VPORT2 LPORT=$LPORT2           \
-#    START_POS=$START_POS2  WARP=$WARP                   \
-
-#nsplug meta_vehicle.bhv targ_betty.bhv -f               \
-#    VNAME=$VNAME2                                       \
-#    CRUISESPEED=$CRUISESPEED                            \
-#    LOITER_PT=$LOITER_PT2                               \
-#    RETURN_PT=$RETURN_PT2
-
 # Prepare Shoreside files
+# shoresides OPORT variable should = shoresides VOPORT
 nsplug meta_shoreside.moos targ_shoreside.moos -f       \
-    SLPORT=$SLPORT                                      \
+    OPORT=$SOPORT                                       \
     SPORT=$SPORT                                        \
     SNAME=$SNAME                                        \
     WARP=$WARP                                          \
@@ -127,7 +118,7 @@ sleep 0.1
 #pAntler targ_betty.moos >& /dev/null &
 #sleep 0.1
 
-# Launch shorestation 
+# Launch shorestation
 printf "Launching $SNAME MOOS Community \n"
 pAntler targ_shoreside.moos >& /dev/null &
 

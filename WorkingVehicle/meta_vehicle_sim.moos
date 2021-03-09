@@ -3,14 +3,13 @@ ServerPort = $(VPORT)
 Community  = $(VNAME)
 
 #include plug_origin_warp.moos
-  
+
 //------------------------------------------------------------
 Processconfig = ANTLER
 {
   MSBetweenLaunches = 200
-   
+
   Run = MOOSDB             @ NewConsole = false
-  Run = pMOOSBridge        @ NewConsole = false ~ pMOOSBridge_%(VNAME)
   Run = uSimMarine         @ NewConsole = false
   Run = pLogger            @ NewConsole = false
   Run = pNodeReporter      @ NewConsole = false
@@ -20,11 +19,12 @@ Processconfig = ANTLER
   Run = pHostInfo          @ NewConsole = true,XConfig=4
   Run = uFldNodeBroker     @ NewConsole = false
   Run = uFldMessageHandler @ NewConsole = false
+  Run = pShare             @ NewConsole = false
 
   4 = -geometry,80x10+20+950,-bg,purple,-fg,white
 }
-  
-#include plug_pMOOSBridgeV.moos
+
+#include plug_pShare.moos
 #include plug_uSimMarine.moos
 #include plug_pLogger.moos
 #include plug_pNodeReporter.moos
@@ -34,4 +34,3 @@ Processconfig = ANTLER
 #include plug_pHostInfo.moos
 #include plug_uFldNodeBroker.moos
 #include plug_uFldMessageHandler.moos
-

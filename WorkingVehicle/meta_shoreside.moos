@@ -6,14 +6,14 @@ ServerPort = $(SPORT)
 Community  = $(SNAME)
 
 #include plug_origin_warp.moos
-  
+
 //--------------------------------------------------------
 Processconfig = ANTLER
 {
   MSBetweenLaunches = 200
 
   Run = MOOSDB          @ NewConsole = false
-  Run = pMOOSBridge     @ NewConsole = false
+  Run = pShare          @ NewConsole = false
   Run = pMarineViewer   @ NewConsole = true
   Run = pLogger         @ NewConsole = false
   Run = pHostInfo       @ NewConsole = true
@@ -27,6 +27,7 @@ Processconfig = ANTLER
 }
 
 #include plug_pHostInfo.moos
+#include plug_pShare.moos
 
 //--------------------------------------------------
 // uFldShoreBroker Configuration Block
@@ -41,16 +42,6 @@ ProcessConfig = uFldShoreBroker
 
   BRIDGE   = src=UP_STATION_$N, alias=UP_STATION
   BRIDGE   = src=LOITER_UPDATES_$V, alias=LOITER_UPDATES
-}
-
-//--------------------------------------------------------
-ProcessConfig = pMOOSBridge
-{
-  AppTick   = 3
-  CommsTick = 3
-
-  UDPListen = $(SLPORT)
-  BridgeFrequency = 0  
 }
 
 //--------------------------------------------------
@@ -75,7 +66,7 @@ ProcessConfig = pLogger
 {
   AppTick       = 10
   CommsTick     = 10
-  
+
   File          = LOG_SHORESIDE
   PATH          = ./
   SyncLog       = true @ 0.2
@@ -83,7 +74,7 @@ ProcessConfig = pLogger
   FileTimeStamp = true
 
   // Log it all!!!!!
-  WildCardLogging = true 
+  WildCardLogging = true
 }
 
 
@@ -135,9 +126,9 @@ ProcessConfig = pMarineViewer
   ACTION  = COLL_AVD_ALL = true
   ACTION+ = COLL_AVD_ALL = false
 
-  BUTTON_ONE   = DEPLOY  # DEPLOY_ALL=true 
+  BUTTON_ONE   = DEPLOY  # DEPLOY_ALL=true
   BUTTON_ONE   = LOITER_ALL=true
-  BUTTON_ONE   = MOOS_MANUAL_OVERIDE_ALL=false 
+  BUTTON_ONE   = MOOS_MANUAL_OVERIDE_ALL=false
   BUTTON_ONE   = RETURN_ALL=false
   BUTTON_ONE   = STATION_ALL=false
 
@@ -149,7 +140,7 @@ ProcessConfig = pMarineViewer
 
   BUTTON_THREE = STATION-NOW  # STATION_ALL=true
   BUTTON_THREE  = LOITER_ALL=false
-  BUTTON_THREE = MOOS_MANUAL_OVERIDE_ALL=false 
+  BUTTON_THREE = MOOS_MANUAL_OVERIDE_ALL=false
   BUTTON_THREE = RETURN_ALL=false
   BUTTON_THREE = DEPLOY_ALL=true
 
@@ -157,7 +148,6 @@ ProcessConfig = pMarineViewer
   BUTTON_FOUR  = LOITER_ALL=false
   BUTTON_FOUR  = RETURN_ALL=false
   BUTTON_FOUR  = DEPLOY_ALL=false
-  BUTTON_FOUR  = STATION_ALL=false 
+  BUTTON_FOUR  = STATION_ALL=false
 
 }
-
