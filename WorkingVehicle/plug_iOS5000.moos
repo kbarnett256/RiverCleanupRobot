@@ -1,0 +1,8 @@
+ProcessConfig = iOS5000
+{
+  AppTick                       = 5
+  CommsTick                     = 5
+  Port                          = /dev/ttyUSB0           // tty port for communicating with the dig compass
+  Speed                         = 19200                 // Always set to 19200 (OS5000 baud rate)
+  PreRotation                   = -4                  // Adjust by -4 for magnetic variation in Atlanta/Ga Tech
+}

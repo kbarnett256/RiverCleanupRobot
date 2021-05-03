@@ -1,0 +1,10 @@
+ServerHost = localhost
+ServerPort = 9100
+Community  = archie
+
+ProcessConfig = pBrains
+{
+  AppTick 	= 60
+  CommsTick 	= 60
+  
+}
